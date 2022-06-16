@@ -7,19 +7,33 @@ STOP_WORDS = [
 ]
 
 word_count = {}
+ordered_dict = {}
 
+#filters out everything we don't need
 def filter_text(text):
     remove_punctuation_text = text.translate(str.maketrans('', '', string.punctuation))
     remove_uppercase_text = remove_punctuation_text.lower()
     list_text = remove_uppercase_text.split()
-    for stop_word in STOP_WORDS:
-        for word in list_text:
-            if stop_word == word:
-                list_text.remove(word)
+    for word in list_text.copy():
+        if word in STOP_WORDS:
+            list_text.remove(word)
     return list_text
 
-# def count_words(text):
-#     for word in text:
+#counts and adds words to dictionary
+def count_words(text):
+    for word in text:
+        if word_count.get(word) == None:
+            word_count[word] = 1
+        else:
+            word_count[word] += 1
+
+def sort_dict(dictionary):
+    ordered_keys = sorted(dictionary, key=dictionary.get, reverse=True)
+
+    for key in ordered_keys[:10]:
+        ordered_dict[key] = word_count[key]
+    print(ordered_dict)
+
 
 def print_word_freq(file):
     """Read in `file` and print out the frequency of words in that file."""
@@ -29,8 +43,12 @@ def print_word_freq(file):
     # print(text_file)
 
     filtered_text = filter_text(text_file)
-    print(filtered_text)
-    # count_words(filtered_text)
+    # print(filtered_text)
+
+    count_words(filtered_text)
+    # print(word_count)
+    sort_dict(word_count)
+
 
 
 if __name__ == "__main__":
