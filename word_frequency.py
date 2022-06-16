@@ -1,4 +1,5 @@
 import string
+from art_title import logo
 
 STOP_WORDS = [
     'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he',
@@ -27,13 +28,21 @@ def count_words(text):
         else:
             word_count[word] += 1
 
+#sorts dictionary
 def sort_dict(dictionary):
     ordered_keys = sorted(dictionary, key=dictionary.get, reverse=True)
 
     for key in ordered_keys[:10]:
         ordered_dict[key] = word_count[key]
-    print(ordered_dict)
 
+#prints list of words
+def print_top_words(dictionary):
+    print(logo)
+    for key, value in dictionary.items():
+        stars = ''
+        for i in range(value):
+            stars += '*'
+        print(f"{key} | {value} {stars}")
 
 def print_word_freq(file):
     """Read in `file` and print out the frequency of words in that file."""
@@ -47,7 +56,11 @@ def print_word_freq(file):
 
     count_words(filtered_text)
     # print(word_count)
+
     sort_dict(word_count)
+    # print(ordered_dict)
+    print_top_words(ordered_dict)
+
 
 
 
